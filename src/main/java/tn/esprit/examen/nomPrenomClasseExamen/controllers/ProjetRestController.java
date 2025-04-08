@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Projet;
+import tn.esprit.examen.nomPrenomClasseExamen.services.ProjetServiceImp;
 import tn.esprit.examen.nomPrenomClasseExamen.services.IProjetService;
 
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.List;
 @RequestMapping("/projet")
 public class ProjetRestController {
     IProjetService projetService;
-
     @PostMapping("/ajouter-projet-et-projet-detail")
     public Projet addProjetAndProjetDetail(@RequestBody Projet p) {
         Projet projet = projetService.addProjetAndProjetDetailAndAssign(p);
@@ -48,5 +48,10 @@ public class ProjetRestController {
     public Projet modifyProjet(@RequestBody Projet c) {
         Projet projet = projetService.modifyProjet(c);
         return projet;
+    }
+    @PutMapping("/affecter-projet-a-projet-details/{projet-id}/{projet-details-id}")
+    public void affecgterProjetAProjetDetail(@PathVariable("projet-id") Long proejtId,
+                                            @PathVariable("projet-details-id") Long proejtDetailsId) {
+        projetService.assignProjetDetailToProjet(proejtId, proejtDetailsId);
     }
 }

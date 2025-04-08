@@ -3,6 +3,8 @@ package tn.esprit.examen.nomPrenomClasseExamen.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Projet;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.ProjetDetail;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.ProjetDetailRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.ProjetRepository;
 
 import java.util.List;
@@ -11,10 +13,18 @@ import java.util.List;
 @AllArgsConstructor
 public class ProjetServiceImp implements IProjetService {
     ProjetRepository projetRepository;
+    ProjetDetailRepository projetDetailRepository;
 
     @Override
     public Projet addProjetAndProjetDetailAndAssign(Projet projet) {
         return projetRepository.save(projet);
+    }
+    public void assignProjetDetailToProjet(Long projetId, Long projetDetailId) {
+        Projet projet = projetRepository.findById(projetId).get();
+        ProjetDetail projetDetail= projetDetailRepository.findById(projetDetailId).get();
+        // on set le fils dans le parent :
+        projet.setProjetDetail(projetDetail);
+        projetRepository.save(projet);
     }
     @Override
     public List<Projet> retrieveAllProjet() {
